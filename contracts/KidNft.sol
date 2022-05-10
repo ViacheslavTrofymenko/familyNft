@@ -14,6 +14,7 @@ contract KidsFactory is ERC721, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
+    uint32 birthDay;
 
     /// @dev KidsNft struct includes all required fields in a task
     struct KidNft {
@@ -28,7 +29,8 @@ contract KidsFactory is ERC721, Ownable {
 
     KidNft[] public kidsNfts;
 
-    event NewKidNft(uint8 age, uint8 indexed level, string indexed Name, string indexed lastName, uint momId, uint dadId);
+    event NewKidNft(uint8 age, uint8 indexed level, string indexed Name, 
+    string indexed lastName, uint momId, uint dadId);
 
     constructor(address _familyAddress) ERC721("KidsNftoken", "KID") {
         parents = FamilyFactory(_familyAddress); 
@@ -36,6 +38,7 @@ contract KidsFactory is ERC721, Ownable {
 
     function createNewKid(address to, uint parentsId, string memory name) external onlyOwner {
         _safeMint(to, parentsId, name);
+        birthDay = uint32(block.timestamp);
     }
 
     function _safeMint(address to, uint parentsId, string memory name) internal {
@@ -71,4 +74,14 @@ contract KidsFactory is ERC721, Ownable {
         emit NewKidNft(age, level, name, lastName, momId, dadId);
     }
 
+    /**@notice Every change on the Ethereum blockchain is always triggered from
+     outside by a signed transaction.
+    Hence, there is no way (I think) automatically update age of kids. You'll 
+    always need to trigger it from outside.
+    But if it's wrong, I want to know how it's solve :) 
+    **/
+    ///@notice 1 kid year, I decided to take equal 1 Earth hour.
+    function getActualAge(uint _tokenId) external returns(uint8) {
+       return kidsNfts[_tokenId].age = uint8((block.timestamp - birthDay) / 3600);
+    }
 }
