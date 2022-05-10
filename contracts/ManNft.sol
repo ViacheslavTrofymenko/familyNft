@@ -31,10 +31,10 @@ contract ManNftFactory is ERC721, Ownable {
     /// @dev Create a new ManNFT token with required NFT fields as per task #4.
 
     function createNewMan(address to, uint8 age, uint8 level, string memory name, string memory lastName) external onlyOwner {
-        _safeMint(to, age, level, name, lastName);
+        _createNewMan(to, age, level, name, lastName);
     }
 
-    function _safeMint(address to, uint8 age, uint8 level, string memory name, string memory lastName) internal {
+    function _createNewMan(address to, uint8 age, uint8 level, string memory name, string memory lastName) internal {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);

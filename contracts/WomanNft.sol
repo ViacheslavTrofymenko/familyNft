@@ -31,10 +31,10 @@ contract WomanNftFactory is ERC721, Ownable {
     /// @dev Create a new WomanNFT token with required NFT fields as per task #4.
 
     function createNewWoman(address to, uint8 age, uint8 level, string memory name, string memory lastName) external onlyOwner {
-        _safeMint(to, age, level, name, lastName);
+        _createNewWoman(to, age, level, name, lastName);
     }
 
-    function _safeMint(address to, uint8 age, uint8 level, string memory name, string memory lastName) internal {
+    function _createNewWoman(address to, uint8 age, uint8 level, string memory name, string memory lastName) internal {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
