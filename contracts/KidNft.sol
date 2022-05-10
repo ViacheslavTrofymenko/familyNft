@@ -66,7 +66,6 @@ contract KidsFactory is ERC721, Ownable {
        /**@notice If will born 2 and more kids from same parents,
         we want to keep their dna similar but not same. Therefore last to digits will be unique for each kid
        **/
-
         uint kidDna = familyDna - familyDna % 100 + uint(keccak256(abi.encodePacked(block.timestamp, name))) % 100;
 
         kidsNfts.push(KidNft(age, level, name, lastName, momId, dadId, kidDna));
@@ -81,7 +80,7 @@ contract KidsFactory is ERC721, Ownable {
     But if it's wrong, I want to know how it's solve :) 
     **/
     ///@notice 1 kid year, I decided to take equal 1 Earth hour.
-    function getActualAge(uint _tokenId) external returns(uint8) {
-       return kidsNfts[_tokenId].age = uint8((block.timestamp - birthDay) / 3600);
+    function getActualAge(uint _tokenId) external {
+       kidsNfts[_tokenId].age = uint8((block.timestamp - birthDay) / 3600);
     }
 }
